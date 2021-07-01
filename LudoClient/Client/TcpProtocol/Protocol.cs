@@ -4,11 +4,12 @@ namespace TcpProtocol
 {
     public abstract class Protocol
     {
-        public static Package GetPackage(string type, Object obj = null)
+        public static Package GetPackage(string typeName, Object obj = null)
         {
-            byte code = TypeCode(type);
-            switch (type)
+            byte code = TypeCode(typeName);
+            switch (typeName)
             {
+                case "connected":   return new Package(code, obj);
                 case "keep":        return new Package(code);
                 case "message":     return new Package(code, obj);
                 default:            return null;
@@ -19,8 +20,9 @@ namespace TcpProtocol
         {
             switch (actionCode)
             {
-                case 0:     return "keep";
-                case 1:     return "message";
+                case 0:     return "connected";
+                case 1:     return "keep";
+                case 2:     return "message";
                 default:    return null;
             }
         }
@@ -29,9 +31,10 @@ namespace TcpProtocol
         {
             switch (actionName)
             {
-                case "keep":    return 0;
-                case "message": return 1;
-                default:        return 255; // null
+                case "connected":   return 0;
+                case "keep":        return 1;
+                case "message":     return 2;
+                default:            return 255; // null
             }
         }
     }
